@@ -1,8 +1,11 @@
 var download = {},
-    request = require('request')
-    concat = require('concat-files')
-    config = require('./config')
-    fs = require('fs');
+    request = require('request'),
+    concat = require('concat-files'),
+    config = require('./config'),
+    multimeter = require('multimeter'),
+    fs = require('fs'),
+    multi = multimeter(process)
+    ;
 
 (function (api) {
 
@@ -53,13 +56,26 @@ var download = {},
     };
 
     var generatePart = function (partNum, contentLength) {
-        var totalPartBytes = Math.floor(contentLength / PARTS)
+        var totalPartBytes = Math.floor(contentLength / PARTS),
+            from = partNum == 1 ? 0 : (totalPartBytes * (partNum-1)) + 1,
+            to = partNum == PARTS ? null : totalPartBytes * partNum,
+            progressBar = multi(4, partNum + 2, {
+                width: 20,
+                solid: {
+                    text: '-'
+                },
+                empty: {
+                    text: ' '
+                }
+            });
 
         return {
+            downloaded: 0,
+            progressBar: progressBar,
             tempFile: tempFile('.part'+partNum),
             number: partNum,
-            from: partNum == 1 ? 0 : (totalPartBytes * (partNum-1)) + 1,
-            to: partNum == PARTS ? '' : totalPartBytes * partNum
+            from: from,
+            to: to
         }
     }
 
@@ -78,6 +94,8 @@ var download = {},
     api.url = ''
     api.completedParts = []
     api.parts = []
+    api.contentLength = 0
+    api.attachmentName = ''
 
     api.download = function (url) {
         this.url = url;
@@ -87,25 +105,40 @@ var download = {},
     }
 
     api.startDownload = function (response) {
-        if (response.headers['accept-ranges'] == 'bytes') {
-            this.downloadInParts(response.headers['content-length']);
+        var disposition, matches;
+
+        if (disposition = response.headers['content-disposition']) {
+            var matches = disposition.match(/filename="([^"]+)"/);
+            if (matches.length && response.headers['accept-ranges'] == 'bytes') {
+                this.attachmentName = matches[1]
+                this.contentLength = parseInt(response.headers['content-length']);
+                this.downloadInParts();
+            }
         }
     }
 
-    api.downloadInParts = function (contentLength) {
+    api.downloadInParts = function () {
         var partNum, part;
+        multi.charm.reset();
+        multi.write('Progress:\n\n');
         for (partNum = 1; partNum <= PARTS; partNum++) {
-            part = generatePart(partNum, contentLength)
+            part = generatePart(partNum, this.contentLength)
             this.parts.push(part)
             this.downloadPart(part)
         }
+    },
 
-        console.log(this.parts);
+    api.progress = function (part, asdf) {
+        var to = (part.to === null ? this.contentLength : part.to);
+        part.downloaded += asdf.length;
+        part.progressBar.percent(part.downloaded / (to - part.from) * 100);
     },
 
     api.downloadPart = function (part) {
+        multi.write(part.number + ":\n");
         server.downloadPart(this.url, part)
             .on('end', this.completedPart.bind(this, part))
+            .on('data', this.progress.bind(this, part))
             .pipe(fs.createWriteStream(part.tempFile))
     }
 
@@ -113,7 +146,9 @@ var download = {},
         this.completedParts.push(part);
 
         if (this.allPartsAreCompleted()) {
+            multi.destroy();
             this.joinParts();
+            console.log("complete! " + this.attachmentName);
         }
     }
 
@@ -124,7 +159,7 @@ var download = {},
     }
 
     api.joinFiles = function (files) {
-        concat(files, downloadFile('wat.rar'), this.removeFiles.bind(this, files))
+        concat(files, downloadFile(this.attachmentName), this.removeFiles.bind(this, files))
     }
 
     api.removeFiles = function (files) {
