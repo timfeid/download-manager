@@ -2,9 +2,7 @@ var download = {},
     request = require('request'),
     concat = require('concat-files'),
     config = require('./config'),
-    multimeter = require('multimeter'),
-    fs = require('fs'),
-    multi = multimeter(process)
+    fs = require('fs')
     ;
 
 (function (api) {
@@ -55,27 +53,21 @@ var download = {},
         }
     };
 
+    var callCallbacks = function (callbacks, api, args) {
+        callbacks.forEach(function (callback) {
+            callback.apply(api, args)
+        })
+    }
+
     var generatePart = function (partNum, contentLength) {
-        var totalPartBytes = Math.floor(contentLength / PARTS),
-            from = partNum == 1 ? 0 : (totalPartBytes * (partNum-1)) + 1,
-            to = partNum == PARTS ? null : totalPartBytes * partNum,
-            progressBar = multi(4, partNum + 2, {
-                width: 20,
-                solid: {
-                    text: '-'
-                },
-                empty: {
-                    text: ' '
-                }
-            });
+        var totalPartBytes = Math.floor(contentLength / PARTS);
 
         return {
             downloaded: 0,
-            progressBar: progressBar,
             tempFile: tempFile('.part'+partNum),
             number: partNum,
-            from: from,
-            to: to
+            from: partNum == 1 ? 0 : (totalPartBytes * (partNum-1)) + 1,
+            to: partNum == PARTS ? contentLength : totalPartBytes * partNum
         }
     }
 
@@ -96,12 +88,25 @@ var download = {},
     api.parts = []
     api.contentLength = 0
     api.attachmentName = ''
+    api.callback = {
+        partCreated: [],
+        partTick: [],
+        complete: []
+    }
 
     api.download = function (url) {
         this.url = url;
         getCookies(function () {
             server.head(url).on('response', this.startDownload.bind(this))
         }.bind(this));
+
+        return this;
+    }
+
+    api.on = function (what, callback) {
+        this.callback[what][this.callback[what].length] = callback
+
+        return this;
     }
 
     api.startDownload = function (response) {
@@ -124,14 +129,14 @@ var download = {},
         for (partNum = 1; partNum <= PARTS; partNum++) {
             part = generatePart(partNum, this.contentLength)
             this.parts.push(part)
+            callCallbacks(this.callback.partCreated, this, [part])
             this.downloadPart(part)
         }
     },
 
-    api.progress = function (part, asdf) {
-        var to = (part.to === null ? this.contentLength : part.to);
-        part.downloaded += asdf.length;
-        part.progressBar.percent(part.downloaded / (to - part.from) * 100);
+    api.progress = function (part, chunk) {
+        part.downloaded += chunk.length;
+        callCallbacks(this.callback.partTick, this, [part, chunk])
     },
 
     api.downloadPart = function (part) {
@@ -146,9 +151,9 @@ var download = {},
         this.completedParts.push(part);
 
         if (this.allPartsAreCompleted()) {
-            multi.destroy();
             this.joinParts();
-            console.log("complete! " + this.attachmentName);
+
+            callCallbacks(this.callback.complete, this, [])
         }
     }
 
