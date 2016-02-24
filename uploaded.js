@@ -1,4 +1,4 @@
-var download = {},
+var uploaded = {},
     request = require('request'),
     concat = require('concat-files'),
     config = require('./config'),
@@ -83,16 +83,19 @@ var download = {},
         })
     }
 
-    download.url = ''
-    download.completedParts = []
-    download.parts = []
-    download.contentLength = 0
-    download.attachmentName = ''
-    download.callback = {
-        partCreated: [],
-        partTick: [],
-        complete: []
+    var download = {
+        url: '',
+        completedParts: [],
+        parts: [],
+        contentLength: 0,
+        attachmentName: '',
+        callbacks: {
+            partCreated: [],
+            partTick: [],
+            complete: []
+        }
     }
+
 
     download.start = function (url) {
         this.url = url;
@@ -104,7 +107,7 @@ var download = {},
     }
 
     download.on = function (what, callback) {
-        this.callback[what][this.callback[what].length] = callback
+        this.callbacks[what].push(callback)
 
         return this;
     }
@@ -129,14 +132,14 @@ var download = {},
         for (partNum = 1; partNum <= PARTS; partNum++) {
             part = generatePart(partNum, this.contentLength)
             this.parts.push(part)
-            callCallbacks(this.callback.partCreated, this, [part])
+            callCallbacks(this.callbacks.partCreated, this, [part])
             this.downloadPart(part)
         }
     },
 
     download.progress = function (part, chunk) {
         part.downloaded += chunk.length;
-        callCallbacks(this.callback.partTick, this, [part, chunk])
+        callCallbacks(this.callbacks.partTick, this, [part, chunk])
     },
 
     download.downloadPart = function (part) {
@@ -153,7 +156,7 @@ var download = {},
         if (this.allPartsAreCompleted()) {
             this.joinParts();
 
-            callCallbacks(this.callback.complete, this, [])
+            callCallbacks(this.callbacks.complete, this, [])
         }
     }
 
@@ -183,12 +186,10 @@ var download = {},
         return this.completedParts.length == PARTS
     }
 
-    api = {
-        download: function (url) {
-            return download.start(url);
-        }
+    api.download = function (url) {
+        return download.start(url);
     }
 
-})(download);
+})(uploaded);
 
-module.exports = download;
+module.exports = uploaded;
