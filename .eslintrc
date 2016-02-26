@@ -1,0 +1,25 @@
+{
+  "env": {
+    "node": true
+  },
+  "rules": {
+    // 2 spaces
+    "indent": [2, 2, {"SwitchCase": 1}],
+    // no semicolons
+    "semi": [2, "never"],
+    // single quotes only, man
+    "quotes": [2, "single"],
+    // curly required for blocks
+    "curly": 2,
+    // define variables, it's not hard
+    "no-use-before-define": 2,
+    // force camelcase variables
+    "camelcase": 2,
+    // force space after keywords (function, else,...)
+    "keyword-spacing": 2,
+    // no unused variables, except as function arguments
+    "no-unused-vars": [2, {"args":"none"}],
+    "no-multi-spaces": [2, { "exceptions": { "VariableDeclarator": true } }],
+    "space-before-blocks": [2, "always"]
+  }
+}
