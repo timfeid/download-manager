@@ -1,11 +1,16 @@
 'use strict'
 
-var config = module.exports = {}
+var helpers = require('../lib/helpers')
+  , config = module.exports = {}
 
-// where to store our temporary files
-config.tempDir = './tmp/'
-// where to put our downloads
-config.downloadDir = './downloads/'
+config.dirs = {}
+// default dir to store our temporary files
+// override with --temp-dir=/path
+config.dirs.temp = '/tmp';
+// default dir to put our downloads
+// override with --download-dir=/path
+config.dirs.download = '~'
+
 // default driver (download entire request in one shot)
 config.defaultDriver = require('./../lib/drivers/single')
 
