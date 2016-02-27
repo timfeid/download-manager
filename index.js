@@ -1,14 +1,25 @@
 #!/usr/bin/env node
 
-var manager = require('./lib/manager')
-  , helpers = require('./lib/helpers')
+var Manager = require('./lib/manager')
+, helpers = require('./lib/helpers')
+
+
+var manager = new Manager()
+
+if (helpers.option('download-dir') !== null) {
+  manager.setPath('download', helpers.option('download-dir'))
+}
+
+if (helpers.option('temp-dir') !== null) {
+  manager.setPath('temp', helpers.option('temp-dir'))
+}
 
 manager.on('download.progress', function (download) {
-  console.log('progress', download.url, download.downloaded / download.contentLength * 100);
+  console.log('progress', download.url, download.downloaded / download.contentLength * 100)
 })
 
 manager.on('add', function (download) {
-  download.start();
+  download.start()
 })
 
 // called from console: `download https://getcomposer.org/installer`
