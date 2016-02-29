@@ -1,7 +1,7 @@
 {
   "name": "dl-manager",
-  "version": "0.1.4",
-  "description": "Download things from uploaded",
+  "version": "0.1.5",
+  "description": "Download things!",
   "main": "index.js",
   "bin": {
     "download": "./index.js"
