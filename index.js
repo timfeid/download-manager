@@ -23,7 +23,9 @@ manager.on('add', function (download) {
 })
 
 // called from console: `download https://getcomposer.org/installer`
-manager.add(helpers.args()[0])
+helpers.args()[0].split(' ').forEach(function (url) {
+  manager.add(url)
+})
 
 // other option is to call directly:
 // manager.add('https://getcomposer.org/installer')
