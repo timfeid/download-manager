@@ -6,15 +6,17 @@ Node Download Manager
 ## Example
 
 ```js
-var manager = require('download-manager')
+var manager = require('dl-manager')
   , url = 'http://path.to/file'
-  , download = manager.add(url)
 
-  download.on('progress', function (download) {
+  manager.on('download.progress', function (download) {
     console.log('progress: ', download.downloaded / download.contentLength * 100)
   })
-  .start()
-  .on('complete', function (download) {
+  .on('download.add', function (download) {
+    download.start()
+  })
+  .on('download.complete', function (download) {
     console.log('download completed: ', download.file)
   })
+  .add(url)
 ```

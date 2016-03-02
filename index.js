@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
-var Manager = require('./lib/manager')
+var manager = require('./lib/manager')
 , helpers = require('./lib/helpers')
 
-
-var manager = new Manager()
 
 if (helpers.option('download-dir') !== null) {
   manager.setPath('download', helpers.option('download-dir'))
