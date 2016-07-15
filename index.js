@@ -12,7 +12,7 @@ if (helpers.option('temp-dir') !== null) {
   manager.setPath('temp', helpers.option('temp-dir'))
 }
 
-manager.on('download.progress', function (download) {
+manager.on('download.progress', function (download, bytes) {
   console.log('progress', download.url, download.downloaded / download.contentLength * 100)
 })
 

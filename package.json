@@ -1,6 +1,6 @@
 {
   "name": "dl-manager",
-  "version": "0.1.9",
+  "version": "0.1.91",
   "description": "Download things!",
   "main": "lib/manager.js",
   "bin": {
