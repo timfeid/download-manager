@@ -19,5 +19,16 @@ var manager = require('dl-manager')
   .on('download.complete', function (download) {
     console.log('download completed: ', download.file)
   })
-  .add(url)
+  .download(url)
+```
+
+```js
+var manager = require('dl-manager')
+
+Promise.all([
+  'https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkg',
+  'https://getcomposer.org/installer',
+].map(manager.download)).then((values => {
+  console.log(values)
+}))
 ```
