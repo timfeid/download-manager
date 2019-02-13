@@ -1,30 +1,23 @@
 #!/usr/bin/env node
 
+process.setMaxListeners(0)
+
 var manager = require('./lib/manager')
-, helpers = require('./lib/helpers')
 
 
-if (helpers.option('download-dir') !== null) {
-  manager.setPath('download', helpers.option('download-dir'))
-}
-
-if (helpers.option('temp-dir') !== null) {
-  manager.setPath('temp', helpers.option('temp-dir'))
-}
+manager.setPath('download', '/Users/timfeid/Downloads/help')
+manager.setPath('temp', '/Users/timfeid/Downloads/help')
 
 manager.on('download.progress', function (download, bytes) {
   console.log('progress', download.url, download.downloaded / download.contentLength * 100)
 })
 
-manager.on('add', function (download) {
-  download.start()
-})
+// manager.download('https://getcomposer.org/installer')
+//   .then(console.log)
 
-// called from console: `download https://getcomposer.org/installer`
-helpers.args()[0].split(' ').forEach(function (url) {
-  manager.add(url)
-})
-
-// other option is to call directly:
-// manager.add('https://getcomposer.org/installer')
-// manager.add('https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkg')
+Promise.all([
+  'https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkg',
+  'https://getcomposer.org/installer',
+].map(x => manager.download(x))).then((values => {
+  console.log(values)
+}))
