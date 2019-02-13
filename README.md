@@ -25,7 +25,7 @@ var manager = require('dl-manager')
 Promise.all([
   'https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkg',
   'https://getcomposer.org/installer',
-].map(manager.download)).then((values => {
+].map(f => manager.download(f))).then((values => {
   console.log(values)
 }))
 ```
