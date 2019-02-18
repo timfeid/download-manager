@@ -2,7 +2,8 @@
 
 process.setMaxListeners(0)
 
-var manager = require('./lib/manager')
+const Manager = require('./lib/manager')
+const manager = new Manager()
 
 
 manager.setPath('download', '/Users/timfeid/Downloads/help')

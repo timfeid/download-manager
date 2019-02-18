@@ -1,6 +1,6 @@
 {
   "name": "dl-manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Download things!",
   "main": "lib/manager.js",
   "bin": {
@@ -16,7 +16,6 @@
   "author": "Tim Feid (tim@timfeid.com) (http://www.timfeid.com)",
   "license": "Apache-2.0",
   "dependencies": {
-    "concat-files": "^0.1.0",
     "dotenv": "^2.0.0",
     "fs": "0.0.2",
     "multimeter": "^0.1.1",
