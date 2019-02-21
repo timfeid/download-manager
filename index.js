@@ -15,18 +15,30 @@ manager.on('download.progress', function (download, bytes) {
   console.log('progress', download.url, download.downloaded / download.contentLength * 100)
 })
 
-// manager.download('https://getcomposer.org/installer')
-//   .then(console.log.bind(console)).catch(() => console.log('error'))
+manager.add('https://getcomposer.org/installer')
+  // .then(console.log.bind(console)).catch(() => console.log('installer error'))
 
-Promise.all([
-  'https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkgggg',
-  'https://getcomposer.org/installer',
-  'https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkgggg',
-  'https://getcomposer.org/installer',
-  'https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkgggg',
-  'https://getcomposer.org/installer',
-].map(x => manager.download(x))).then((values => {
-  console.log(values)
-})).catch((error) => {
-  console.log('error')
-})
+manager.add('https://getcomposer.org/installerrrr')
+  // .then(console.log.bind(console)).catch(() => console.log('THIS SHOULD ERROR, NP [installer]'))
+
+manager.add('https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkg')
+  // .then(console.log.bind(console)).catch(() => console.log('PACKAGE MNG ERROR'))
+
+manager.add('https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkgggg')
+  // .then(console.log.bind(console)).catch(() => console.log('THIS SHOULD ERROR, NP [node]'))
+
+manager.add('https://google.com/a')
+  // .then(console.log.bind(console)).catch(() => console.log('google error'))
+
+// Promise.all([
+//   'https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkgggg',
+//   'https://getcomposer.org/installer',
+//   'https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkgggg',
+//   'https://getcomposer.org/installer',
+//   'https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkgggg',
+//   'https://getcomposer.org/installer',
+// ].map(x => manager.download(x))).then((values => {
+//   console.log(values)
+// })).catch((error) => {
+//   console.log('error')
+// })
