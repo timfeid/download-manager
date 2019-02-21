@@ -14,11 +14,13 @@ manager.on('download.progress', function (download, bytes) {
 })
 
 // manager.download('https://getcomposer.org/installer')
-//   .then(console.log)
+//   .then(console.log.bind(console)).catch(() => console.log('error'))
 
 Promise.all([
-  'https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkg',
+  'https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkgggg',
   'https://getcomposer.org/installer',
 ].map(x => manager.download(x))).then((values => {
   console.log(values)
-}))
+})).catch((error) => {
+  console.log('error')
+})
