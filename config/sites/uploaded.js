@@ -1,7 +1,6 @@
 'use strict'
 
 var axios = require('axios')
-
 var cookies = null
 
 var env = require('dotenv').config()
@@ -13,19 +12,17 @@ uploaded.match = /uploaded\.net/
 // how to authenticate (form url, method, and params)
 uploaded.authenticate = async function () {
   try {
-    var response = await axios({
+    const response = await axios({
       method: 'POST',
-      url: `https://uploaded.net/io/login?id=${env.UPLOADED_USERNAME}&pw=${env.UPLOADED_PASSWORD}`,
+      url: 'http://uploaded.net/io/login',
       withCredentials: true,
+      data: `id=${encodeURIComponent(env.UPLOADED_USERNAME)}&pw=${encodeURIComponent(env.UPLOADED_PASSWORD)}`,
     })
+
+    cookies = response.headers['set-cookie'].map((cookie) => cookie.substr(0, cookie.indexOf(';'))).join(';')
   } catch (e) {
     console.error(e)
   }
-  const cookie = response.headers['set-cookie'][0]
-
-  cookies = cookie.substr(0, cookie.indexOf(';'))
-
-  return response
 
 }
 

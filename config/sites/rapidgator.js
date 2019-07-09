@@ -6,9 +6,11 @@ var env = require('dotenv').config()
 var fs = require('fs')
 var path = require('path')
 var sidFile = path.resolve(__dirname, '../../tmp/rapidgator.sid')
-console.log(sidFile)
 var sid = fs.existsSync(sidFile) ? JSON.parse(fs.readFileSync(sidFile)) : null
 
+function needsReauthentication() {
+  return sid.expire_date <= Math.floor(new Date() / 1000)
+}
 
 async function getSid() {
   try {
@@ -28,6 +30,10 @@ async function getSid() {
 }
 
 rg.transformUrl = async function (url) {
+  if (needsReauthentication()) {
+    sid = null
+    await rg.authenticate()
+  }
   const response = await axios({
     url: `https://rapidgator.net/api/file/download?sid=${sid.session_id}&url=${encodeURIComponent(url)}`,
   })
@@ -40,9 +46,11 @@ rg.match = /rapidgator\.net/
 
 // how to authenticate (form url, method, and params)
 rg.authenticate = async function () {
-  if (!sid) {
+  if (!sid || needsReauthentication()) {
     await getSid()
   }
 
   return
 }
+
+rg.maxParts = 4
