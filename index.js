@@ -12,12 +12,9 @@ manager.setPath('download', '/Users/timfeid/Downloads/help')
 manager.setPath('temp', '/Users/timfeid/Downloads/help')
 
 manager.on('download.progress', function (download, bytes) {
-  // console.log('progress', download.url, download.downloaded / download.contentLength * 100)
+  console.log('progress', download.url, download.downloaded / download.contentLength * 100)
 })
 
-
-manager.add('https://rapidgator.net/file/4962358d1adcad60604e33cca2603b28/YaThRbiS10720HDVx6T.rar')
-  .on('error', (error) => console.log(error))
 
 // manager.add('https://getcomposer.org/installer')
   // .then(console.log.bind(console)).catch(() => console.log('installer error'))
