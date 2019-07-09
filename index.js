@@ -15,19 +15,23 @@ manager.on('download.progress', function (download, bytes) {
   console.log('progress', download.url, download.downloaded / download.contentLength * 100)
 })
 
-manager.add('https://getcomposer.org/installer')
+
+manager.add('http://uploaded.net/file/o3n6a3oo/YaThRbiS10720HDVx6T.rar')
+  .on('error', (error) => console.log(error))
+
+// manager.add('https://getcomposer.org/installer')
   // .then(console.log.bind(console)).catch(() => console.log('installer error'))
 
-manager.add('https://getcomposer.org/installerrrr')
+// manager.add('https://getcomposer.org/installerrrr')
   // .then(console.log.bind(console)).catch(() => console.log('THIS SHOULD ERROR, NP [installer]'))
 
-manager.add('https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkg')
+// manager.add('https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkg')
   // .then(console.log.bind(console)).catch(() => console.log('PACKAGE MNG ERROR'))
 
-manager.add('https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkgggg')
+// manager.add('https://nodejs.org/dist/v4.3.1/node-v4.3.1.pkgggg')
   // .then(console.log.bind(console)).catch(() => console.log('THIS SHOULD ERROR, NP [node]'))
 
-manager.add('https://google.com/a')
+// manager.add('https://google.com/a')
   // .then(console.log.bind(console)).catch(() => console.log('google error'))
 
 // Promise.all([

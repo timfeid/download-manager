@@ -21,3 +21,4 @@ config.drivers.push(require('./../lib/drivers/parts')(8))
 // array of authenticatable websites
 config.sites = []
 config.sites.push(require('./sites/uploaded'))
+config.sites.push(require('./sites/rapidgator'))
