@@ -9,6 +9,7 @@ var sidFile = path.resolve(__dirname, '../../tmp/rapidgator.sid')
 var sid = fs.existsSync(sidFile) ? JSON.parse(fs.readFileSync(sidFile)) : null
 
 function needsReauthentication() {
+  return true
   return sid.expire_date <= Math.floor(new Date() / 1000)
 }
 
