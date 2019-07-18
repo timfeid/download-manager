@@ -5,7 +5,7 @@ var env = require('dotenv').config()
   , rg = module.exports = {}
 var fs = require('fs')
 var path = require('path')
-var sidFile = path.resolve(__dirname, '../../tmp/rapidgator.sid')
+var sidFile = path.resolve(__dirname, 'rapidgator.sid')
 var sid = fs.existsSync(sidFile) ? JSON.parse(fs.readFileSync(sidFile)) : null
 
 function needsReauthentication() {
@@ -35,11 +35,17 @@ rg.transformUrl = async function (url) {
     sid = null
     await rg.authenticate()
   }
-  const response = await axios({
-    url: `https://rapidgator.net/api/file/download?sid=${sid.session_id}&url=${encodeURIComponent(url)}`,
-  })
 
-  return response.data.response.url
+  try {
+
+    const response = await axios({
+      url: `https://rapidgator.net/api/file/download?sid=${sid.session_id}&url=${encodeURIComponent(url)}`,
+    })
+    return response.data.response.url
+  } catch (e) {
+    return url
+  }
+
 }
 
 // how to tell if the url is a match for this config

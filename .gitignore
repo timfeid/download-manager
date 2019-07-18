@@ -1,4 +1,4 @@
 .env
 node_modules/*
 downloads/*
-tmp/*
+config/sites/rapidgator.sid
