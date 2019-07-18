@@ -16,7 +16,10 @@ manager.on('download.progress', function (download, bytes) {
 })
 
 
-// manager.add('https://getcomposer.org/installer')
+const download = manager.add('https://rapidgator.net/file/6e1eeef87f1df7cb4b4ea8cfb6675a47/ThMrthon11970BluRax6BiOAR.rar')
+setTimeout(() => {
+  download.cancel()
+}, 3000);
   // .then(console.log.bind(console)).catch(() => console.log('installer error'))
 
 // manager.add('https://getcomposer.org/installerrrr')
