@@ -12,11 +12,12 @@ manager.setPath('download', '/Users/timfeid/Downloads/help')
 manager.setPath('temp', '/Users/timfeid/Downloads/help')
 
 manager.on('download.progress', function (download, bytes) {
-  console.log('progress', download.url, download.downloaded / download.contentLength * 100)
+  console.log('progress', download.originalUrl, download.downloaded / download.contentLength * 100)
 })
 
 
-const download = manager.add('https://rapidgator.net/file/6e1eeef87f1df7cb4b4ea8cfb6675a47/ThMrthon11970BluRax6BiOAR.rar')
+manager.add('https://rapidgator.net/file/e6e9984a16b1d3b26267dfb3da59e649/TeRoS1E0470WEh24TBS.rar')
+const download = manager.add('https://rapidgator.net/file/faa96119d6e878808b04bdbf9806db98/GhstAvetrsS90HutigScttsdle70WBx6CFFiE.rar')
 // setTimeout(() => {
 //   download.cancel()
 // }, 3000);

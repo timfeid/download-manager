@@ -8,9 +8,12 @@ var path = require('path')
 var sidFile = path.resolve(__dirname, 'rapidgator.sid')
 var sid = fs.existsSync(sidFile) ? JSON.parse(fs.readFileSync(sidFile)) : null
 
+// Every hour
 function needsReauthentication() {
-  return true
-  // return sid.expire_date <= Math.floor(new Date() / 1000)
+  const lastDate = new Date(sid.last_retrived)
+  const compare = Number(new Date())
+
+  return lastDate.setHours(lastDate.getHours() + 1) >= compare
 }
 
 async function getSid() {
@@ -20,6 +23,7 @@ async function getSid() {
     })
 
     sid = response.data.response
+    sid.last_retrived = Number(new Date() / 1000)
 
     fs.writeFileSync(sidFile, JSON.stringify(sid))
 
