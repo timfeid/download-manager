@@ -16,11 +16,11 @@ manager.on('download.progress', function (download, bytes) {
 })
 
 
-manager.add('https://rapidgator.net/file/e6e9984a16b1d3b26267dfb3da59e649/TeRoS1E0470WEh24TBS.rar')
-const download = manager.add('https://rapidgator.net/file/faa96119d6e878808b04bdbf9806db98/GhstAvetrsS90HutigScttsdle70WBx6CFFiE.rar')
-// setTimeout(() => {
-//   download.cancel()
-// }, 3000);
+// manager.add('https://rapidgator.net/file/faa96119d6e878808b04bdbf9806db98/GhstAvetrsS90HutigScttsdle70WBx6CFFiE.rar')
+const download = manager.add('https://rapidgator.net/file/6e1eeef87f1df7cb4b4ea8cfb6675a47/ThMrthon11970BluRax6BiOAR.rar')
+setTimeout(() => {
+  download.cancel()
+}, 3000);
   // .then(console.log.bind(console)).catch(() => console.log('installer error'))
 
 // manager.add('https://getcomposer.org/installerrrr')

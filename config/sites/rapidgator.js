@@ -37,6 +37,7 @@ async function getSid() {
 rg.transformUrl = async function (url) {
   if (needsReauthentication()) {
     sid = null
+    console.log('reauthenticating')
     await rg.authenticate()
   }
 
