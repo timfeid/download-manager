@@ -10,6 +10,10 @@ var sid = fs.existsSync(sidFile) ? JSON.parse(fs.readFileSync(sidFile)) : null
 
 // Every hour
 function needsReauthentication() {
+  if (!sid) {
+    return true
+  }
+
   const lastDate = new Date(sid.last_retrived)
   const compare = Number(new Date())
 
