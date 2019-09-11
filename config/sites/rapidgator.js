@@ -8,16 +8,20 @@ var path = require('path')
 var sidFile = path.resolve(__dirname, 'rapidgator.sid')
 var sid = fs.existsSync(sidFile) ? JSON.parse(fs.readFileSync(sidFile)) : null
 
+const lessThanOneHourAgo = (date) => {
+  const HOUR = 1000 * 60 * 60;
+  const anHourAgo = Date.now() - HOUR;
+
+  return date > anHourAgo;
+}
+
 // Every hour
 function needsReauthentication() {
   if (!sid) {
     return true
   }
 
-  const lastDate = new Date(sid.last_retrived)
-  const compare = Number(new Date())
-
-  return lastDate.setHours(lastDate.getHours() + 1) >= compare
+  return !lessThanOneHourAgo(new Date(sid.last_retrived))
 }
 
 async function getSid() {
