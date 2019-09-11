@@ -23,7 +23,7 @@ async function getSid() {
     })
 
     sid = response.data.response
-    sid.last_retrived = Number(new Date() / 1000)
+    sid.last_retrived = Number(new Date())
 
     fs.writeFileSync(sidFile, JSON.stringify(sid))
 
