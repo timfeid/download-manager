@@ -1,8 +1,8 @@
 {
   "name": "dl-manager",
-  "version": "1.2.4",
+  "version": "2.0.0",
   "description": "Download things!",
-  "main": "lib/manager.js",
+  "main": "dist/index.js",
   "bin": {
     "download": "./index.js"
   },
@@ -16,21 +16,7 @@
   "author": "Tim Feid (tim@timfeid.com) (http://www.timfeid.com)",
   "license": "Apache-2.0",
   "dependencies": {
-    "axios": "^0.19.0",
-    "dotenv": "^2.0.0",
-    "eslint": "4.18.2",
-    "form-data": "^2.5.0",
-    "fs": "0.0.2",
-    "lodash": "4.17.13",
-    "lodash.template": "4.5",
-    "minimatch": "3.0.2",
-    "multimeter": "^0.1.1",
-    "request": "^2.69.0"
   },
   "devDependencies": {
-    "eslint-config-google": "^0.4.0",
-    "gulp": "^3.9.1",
-    "gulp-eslint": "^2.0.0",
-    "gulp-notify": "^2.2.0"
   }
 }
