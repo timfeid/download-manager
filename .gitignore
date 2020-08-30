@@ -1,4 +1,5 @@
 .env
-node_modules/*
-downloads/*
-config/sites/rapidgator.sid
+node_modules
+downloads
+__tests__/downloads
+yarn-error.log

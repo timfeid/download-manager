@@ -11,7 +11,7 @@ describe('site matcher', () => {
   })
 
   it('matches rapidgator', async () => {
-    expect(matchSite('https://rapidgator.net/file/random/Rfa191180pAZWELDP224O.part1.rar')).to.be.instanceOf(Rapidgator)
+    expect(matchSite('https://rapidgator.net/file/cd292d534617e8b65831a25c4d6b9613/test.txt.html')).to.be.instanceOf(Rapidgator)
   })
 
   it('can authenticate', async () => {
@@ -24,7 +24,7 @@ describe('site matcher', () => {
   })
 
   it('transforms url to download url', async () => {
-    const transformedUrl = await rapidgator.transformUrl('https://rapidgator.net/file/fake/Rfa191180pAZWELDP224O.part1.rar')
+    const transformedUrl = await rapidgator.transformUrl('https://rapidgator.net/file/cd292d534617e8b65831a25c4d6b9613/test.txt.html')
     expect(/^https?:\/\/[^.]+\.rapidgator\.net\/download\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(transformedUrl)).to.eq(true)
   })
 

@@ -62,8 +62,7 @@ class Part extends EventEmitter {
 
   progress (chunk: string) {
     this.downloaded += chunk.length
-    this.parts.download.emit('part.progress', this)
-    // console.log(this.downloaded / this.totalBytes * 100)
+    this.parts.download.progress(chunk.length)
   }
 
   completed () {
@@ -100,13 +99,11 @@ export default class Parts extends Driver {
   parts: Part[] = []
 
   async start () {
-    console.log('we are in here')
     this.createParts()
 
     // await this.parts[0].download()
     await Promise.all(this.parts.map(async p => await p.download()))
     await this.joinParts()
-    console.log('done!')
   }
 
   private createParts () {
