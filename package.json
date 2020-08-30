@@ -3,9 +3,6 @@
   "version": "2.0.0",
   "description": "Download things!",
   "main": "dist/index.js",
-  "bin": {
-    "download": "./index.js"
-  },
   "scripts": {
     "serve": "tsnd index.ts",
     "test": "NODE_ENV=test ts-mocha --paths '__tests__/*.test.ts' --exit"
